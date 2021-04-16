@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.application'
+    id 'nl.neotech.plugin.appcenter'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "org.neotech.app"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+appcenter {
+    ownerName = "neotech-software"
+    distributionGroups = ["Collaborators"]
+    notifyTesters = false
+    apps {
+        release {
+            appName = "AppCenter-Plugin-Test-App"
+        }
+    }
+}
+
+dependencies {
+
+}

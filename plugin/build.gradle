@@ -1,0 +1,112 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+    id "java-gradle-plugin"
+
+    // For publishing to Plugin Portal & Maven Central
+    id "com.gradle.plugin-publish"
+    id "com.github.dcendents.android-maven"
+    id "org.jetbrains.dokka"
+    id "com.vanniktech.maven.publish" apply false
+}
+
+// See: https://github.com/vanniktech/gradle-maven-publish-plugin/issues/206
+ext {
+    RELEASE_REPOSITORY_URL = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+    SNAPSHOT_REPOSITORY_URL = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+}
+
+apply plugin: "com.vanniktech.maven.publish"
+
+// To upload new plugin artifact Gradle Portal:
+// > ./gradlew publishPlugins
+//
+// To upload new plugin artifact to Maven Central Repository:
+// > ./gradlew publishPluginMavenPublicationToMavenCentralRepository --no-daemon --no-parallel
+//
+// To test the plugin:
+// > ./gradlew clean test
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+publishing {
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? SNAPSHOT_REPOSITORY_URL : RELEASE_REPOSITORY_URL
+            name = "mavenCentral"
+            credentials {
+                Properties properties = new Properties()
+                try {
+                    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                } catch (FileNotFoundException ignored) {
+                    logger.warn("local.properties file with ossrhUsername and ossrhPassword properties was not found.")
+                }
+                username = properties.getProperty("ossrhUsername")
+                password = properties.getProperty("ossrhPassword")
+            }
+        }
+    }
+}
+
+gradlePlugin {
+    plugins {
+        appCenter {
+            id = 'nl.neotech.plugin.appcenter'
+            implementationClass = 'com.betomorrow.gradle.appcenter.AppCenterPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    setWebsite(POM_URL)
+    vcsUrl = POM_SCM_URL
+    setDescription(POM_DESCRIPTION)
+    tags = ['android', 'appcenter']
+
+    plugins {
+        appCenter {
+            displayName = 'Android-AppCenter-Plugin'
+        }
+    }
+
+    mavenCoordinates {
+        groupId = GROUP
+        artifactId = POM_ARTIFACT_ID
+        version = VERSION_NAME
+    }
+}
+
+test {
+    systemProperty "APPCENTER_API_TOKEN", findProperty("APPCENTER_API_TOKEN")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams true
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    implementation projectDependency.androidGradlePlugin
+    implementation projectDependency.kotlinStdlibJdk8
+
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+
+    implementation projectDependency.okhttp
+    implementation projectDependency.okhttpLoggingInterceptor
+    implementation projectDependency.retrofit
+    implementation projectDependency.retrofitGsonConverter
+
+    testImplementation projectDependency.kotlinStdlibJdk8
+    testImplementation gradleTestKit()
+    testImplementation projectDependency.junit
+    testImplementation projectDependency.truth
+}

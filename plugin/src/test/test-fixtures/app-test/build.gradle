@@ -1,0 +1,21 @@
+buildscript {
+
+    // Import versions
+    apply from: "../../../../../gradle/dependencies.gradle"
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

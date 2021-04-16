@@ -1,0 +1,39 @@
+ext {
+    projectVersion = [
+            minSdk    : 19,
+            targetSdk : 30,
+            compileSdk: 30,
+            kotlin    : "1.4.31",
+            okhttp    : "4.5.0",
+            retrofit  : "2.6.1",
+    ]
+    projectDependency = [
+
+            // Gradle Plugins
+            kotlinPlugin            : "org.jetbrains.kotlin:kotlin-gradle-plugin:${projectVersion.kotlin}",
+            androidGradlePlugin     : "com.android.tools.build:gradle:4.1.2",
+
+            // Dependencies
+            kotlinStdlibJdk8        : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${projectVersion.kotlin}",
+
+            okhttp                  : "com.squareup.okhttp3:okhttp:${projectVersion.okhttp}",
+            okhttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${projectVersion.okhttp}",
+
+            retrofit                : "com.squareup.retrofit2:converter-gson:${projectVersion.retrofit}",
+            retrofitGsonConverter   : "com.squareup.retrofit2:retrofit:${projectVersion.retrofit}",
+
+            // Test dependencies
+            junit                   : "junit:junit:4.13.2",
+            truth                   : "com.google.truth:truth:1.1.2",
+    ]
+
+    // Used by the plugin-version-handler.gradle
+    pluginVersions = [
+            "org.jetbrains.kotlin.android"      : "${projectVersion.kotlin}",
+            "org.jetbrains.kotlin.jvm"          : "${projectVersion.kotlin}",
+            "com.github.dcendents.android-maven": "2.1",
+            "com.gradle.plugin-publish"         : "0.13.0",
+            "org.jetbrains.dokka"               : "1.4.30",
+            "com.vanniktech.maven.publish"      : "0.14.2",
+    ]
+}

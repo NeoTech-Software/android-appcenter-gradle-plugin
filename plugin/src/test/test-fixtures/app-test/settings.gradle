@@ -1,0 +1,22 @@
+// See plugin-version-handler.gradle for an explanation why this is here.
+pluginManagement {
+    /*
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'nl.neotech.plugin.appcenter') {
+                useModule("nl.neotech.plugin:android-appcenter-plugin:$requested.version")
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+     */
+    apply from: "../../../../../gradle/plugin-version-handler.gradle", to: pluginManagement
+}
+
+rootProject.name = "Android AppCenter Plugin Test Application"
+include ':app'
