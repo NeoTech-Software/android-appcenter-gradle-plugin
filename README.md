@@ -1,36 +1,53 @@
-# AppCenter Gradle Plugin
+# Android AppCenter Gradle Plugin
 
-[![Build Status](https://travis-ci.com/oliviergauthier/gradle-appcenter-plugin.svg?branch=master)](https://travis-ci.com/oliviergauthier/gradle-appcenter-plugin.svg?branch=master)
+**This project is a Fork of the original
+[AppCenter Gradle Plugin](https://github.com/oliviergauthier/gradle-appcenter-plugin) by Olivier Gauthier. The aim of
+this Fork is to offer a stable and frequently updated/maintained alternative plugin for uploading builds to AppCenter.
+At this point in time the plugin itself has not changed, except that is now also works with the Android Gradle Plugin
+version 4.1. In the future some more changes can be expected.**
 
-## Summary
+This plugin allows you to upload android application to AppCenter. You can declare several applications, the plugin will
+take care of build variant to upload the apk on the right AppCenter application
 
-This plugin allow you to upload android application to AppCenter. You can declare several applications, the plugin will take care of build variant to upload the apk on the right AppCenter application
-
-Find last version on [Gradle Repository](https://plugins.gradle.org/plugin/com.betomorrow.appcenter)
+Find last version on [Gradle Repository](https://plugins.gradle.org/plugin/nl.neotech.plugin.appcenter)
 
 ## Quick Start
 
-File : `build.gradle`
+Add the plugin using one of the following methods:
+
+<details open>
+  <summary><strong>Plugin block:</strong></summary>
+
+  ```groovy
+  // In your app's build.gradle file (usually app/build.gradle)
+  plugins {
+      id "nl.neotech.plugin.appcenter" version "1.0.0-beta.1"
+  }
+  ```
+</details>
+
+<details>
+  <summary><strong>classpath + apply:</strong></summary>
+
+root `build.gradle` file:
+   ```groovy
+   buildscript {
+      dependencies {
+         classpath 'nl.neotech.plugin:android-appcenter-plugin:1.0.0-beta.1'
+      }
+   }
+   ```
+app `build.gradle` file:
+   ```groovy
+   apply plugin: 'nl.neotech.plugin.appcenter'
+   ```
+</details>
+
+Then use the `appcenter` block to configure the plugin as shown in this example:
 
 ```groovy
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "gradle.plugin.com.betomorrow.gradle:appcenter-plugin:1.3.0"
-    }
-}
 
-```
-
-File : `app/build.gradle`
-
-```groovy
-
-apply plugin: "com.betomorrow.appcenter"
+apply plugin: "nl.neotech.plugin.appcenter"
 
 android {
     // ...
@@ -127,12 +144,9 @@ appcenter {
 
 ## Gradle Android Plugin Compatibility Matrix
 
-| Android Build Tool Version | AppCenter Plugin Version |
-| -------------------------- | ------------------------ |
-| 4.1.3                      | 1.3.x                    |
-| 3.6.0                      | 1.2.x                    |
-| 3.5.0                      | 1.1.13 - 1.1.18          |
-| 3.3.0                      | < 1.1.13                 |
+| Version       | Android Gradle plugin version | Gradle version    |
+| ------------- | ----------------------------- | ----------------- |
+| **1.0.0**     | 4.1+                          | 6.5+              |
 
 ## Use Environment Variables (for CI use)
 - `APPCENTER_API_TOKEN` : AppCenter API token
