@@ -19,6 +19,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        nonStandardBuildType.initWith(release)
+        nonStandardBuildType {
+            minifyEnabled true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -31,7 +35,7 @@ appcenter {
     distributionGroups = ["Collaborators"]
     notifyTesters = false
     apps {
-        release {
+        nonStandardBuildType {
             appName = "AppCenter-Plugin-Test-App"
         }
     }

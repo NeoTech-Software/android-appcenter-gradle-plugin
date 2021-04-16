@@ -7,6 +7,8 @@ import com.betomorrow.gradle.appcenter.extensions.AppCenterExtension
 import com.betomorrow.gradle.appcenter.tasks.UploadAppCenterApkTask
 import com.betomorrow.gradle.appcenter.tasks.UploadAppCenterMappingTask
 import com.betomorrow.gradle.appcenter.tasks.UploadAppCenterSymbolsTask
+import com.betomorrow.gradle.appcenter.tasks.UploadAppCenterTask
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -72,6 +74,13 @@ class AppCenterPlugin : Plugin<Project> {
                     })
 
                     if (appCenterApp.uploadMappingFiles) {
+                        if(!variant.buildType.isMinifyEnabled) {
+                            throw GradleException(
+                                "uploadMappingFiles is true for AppCenter variant `${variant.name}` while its " +
+                                        "BuildType `${variant.buildType.name}` uses minifyEnabled false. To fix this " +
+                                        "either set uploadMappingFiles in the appcenter configuration block to false " +
+                                        "for this variant, or set minifyEnabled to true for BuildType `${variant.buildType.name}`.")
+                        }
                         appCenterAppTasks.add(project.tasks.register(
                             "appCenterUploadMapping$taskSuffix",
                             UploadAppCenterMappingTask::class.java,

@@ -1,6 +1,7 @@
 package nl.neotech.plugin.appcenter
 
 import com.google.common.truth.Truth.assertThat
+import nl.neotech.plugin.appcenter.util.SystemOutputWriter
 import nl.neotech.plugin.appcenter.util.createLocalPropertiesFile
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Test
@@ -23,12 +24,19 @@ class IntegrationTest(
         val runner = GradleRunner.create()
             .withProjectDir(projectRoot)
             .withGradleVersion(gradleVersion)
-            .withEnvironment(mapOf(
-                "APPCENTER_API_TOKEN" to System.getProperty("APPCENTER_API_TOKEN")
-            ))
+            //.withDebug(true)
+            //.withEnvironment(mapOf(
+            //    "APPCENTER_API_TOKEN" to System.getProperty("APPCENTER_API_TOKEN")
+            //))
             .withPluginClasspath()
-            .forwardOutput()
-            .withArguments("clean", "app:appCenterAssembleAndUploadRelease", "--stacktrace")
+            .forwardStdOutput(SystemOutputWriter.out())
+            .forwardStdError(SystemOutputWriter.err())
+            .withArguments(
+                "clean",
+                "app:appCenterAssembleAndUploadNonStandardBuildType",
+                "-DAPPCENTER_API_TOKEN=${System.getProperty("APPCENTER_API_TOKEN")}",
+                "--stacktrace"
+            )
 
         val result = runner.build()
 
