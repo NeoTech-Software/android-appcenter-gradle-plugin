@@ -21,7 +21,7 @@ Add the plugin using one of the following methods:
   ```groovy
   // In your app's build.gradle file (usually app/build.gradle)
   plugins {
-      id "nl.neotech.plugin.appcenter" version "1.0.0-beta.2"
+      id "nl.neotech.plugin.appcenter" version "1.0.0-beta.3"
   }
   ```
 </details>
@@ -33,7 +33,7 @@ root `build.gradle` file:
    ```groovy
    buildscript {
       dependencies {
-         classpath 'nl.neotech.plugin:android-appcenter-plugin:1.0.0-beta.2'
+         classpath 'nl.neotech.plugin:android-appcenter-plugin:1.0.0-beta.3'
       }
    }
    ```
