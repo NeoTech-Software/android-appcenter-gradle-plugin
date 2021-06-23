@@ -24,7 +24,7 @@ apply plugin: "com.vanniktech.maven.publish"
 // > ./gradlew publishPluginMavenPublicationToMavenCentralRepository --no-daemon --no-parallel
 //
 // To test the plugin:
-// > ./gradlew clean test
+// > ./gradlew clean test -PAPPCENTER_API_TOKEN={yourTokenForTestUpload}
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -81,7 +81,14 @@ pluginBundle {
 }
 
 test {
-    systemProperty "APPCENTER_API_TOKEN", findProperty("APPCENTER_API_TOKEN")
+    def apiToken = findProperty("APPCENTER_API_TOKEN")
+    doFirst {
+        if (!apiToken?.trim()) {
+            throw new GradleException("Provide an APPCENTER_API_TOKEN to be able to run tests using -PAPPCENTER_API_TOKEN={yourToken}")
+
+        }
+    }
+    systemProperty "APPCENTER_API_TOKEN", apiToken
 
     testLogging {
         events "passed", "skipped", "failed"
